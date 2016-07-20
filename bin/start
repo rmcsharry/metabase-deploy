@@ -83,4 +83,3 @@ if [ ! -z "$RDS_HOSTNAME" ]; then
 fi
 
 exec java -Dfile.encoding=UTF-8 $JAVA_OPTS -jar ./target/uberjar/metabase.jar
-exec apt-get install expect

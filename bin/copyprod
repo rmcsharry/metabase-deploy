@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+spawn ssh basil@85.159.211.37 'pg_dump easypeasy_production | gzip > backup_`date +%Y.%m.%d`.sql.gz'
+
+expect "password:"
+
+send zNyYv3xf8\n;
+
+interact
+
+mkdir -p ./tmp/backups
+
+scp basil@85.159.211.37:backup_`date +%Y.%m.%d`.sql.gz ./tmp/backups/
+
+expect "password:"
+
+send zNyYv3xf8\n;
+
+interact

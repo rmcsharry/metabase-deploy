@@ -82,8 +82,6 @@ if [ ! -z "$RDS_HOSTNAME" ]; then
     export MB_DB_PORT=$RDS_PORT
 fi
 
-exec java -Dfile.encoding=UTF-8 $JAVA_OPTS -jar ./target/uberjar/metabase.jar
-
 # For easypeasy
 # grap the RSA key and write it to file so we can later ssh out
 echo "checking..."
@@ -95,3 +93,5 @@ if [ "$EPMETA_RSA_KEY" ]; then
 else
   echo "env var EPMETA_RSA_KEY not found"
 fi
+
+exec java -Dfile.encoding=UTF-8 $JAVA_OPTS -jar ./target/uberjar/metabase.jar

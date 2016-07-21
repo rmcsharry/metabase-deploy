@@ -14,5 +14,8 @@ scp user@server:backup_`date +%Y.%m.%d`.sql.gz dump.sql.gz
 gunzip dump.sql.gz
 
 # Run the dump to restore the db
-cat dump.sql | psql postgres://qpkluqcmlkyfhg:jtOmT5VNrZKlrFf7eFY52Dd5Hf@ec2-54-228-226-93.eu-west-1.compute.amazonaws.com:5432/dec6qk7d1rd638
+cat dump.sql | psql postgres://<full url of heroku postgres db>
+
+# looks like this
+# postgres://qpkluqcmlkyfhg:jtOmT5VNrZKlrFf7eFY52Dd5Hf@ec2-54-228-226-93.eu-west-1.compute.amazonaws.com:PORT/NAME
 

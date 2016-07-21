@@ -88,7 +88,7 @@ Note that (1) does not guarantee they are setup correctly so best to also do (2)
 This will cause the setup.ssh script to execute and you should see it successfully report that it wrote the public and private keys to file and the IP address of production (since it got added to known hosts)
 
 ```bash
-Running bash on ⬢ epmetab... up, run.8636
+Running bash on ⬢ <heroku app name here>.. up, run.8636
 Checking if keys exist...
 HEROKU_PUBLIC_KEY successfully written to file
 HEROKU_PRIVATE_KEY successfully written to file

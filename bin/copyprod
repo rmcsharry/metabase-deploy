@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # Create a 'clean backup' so it includes commands to drop tables when we restore
-ssh basil@85.159.211.37 'pg_dump --clean easypeasy_production | gzip > backup_`date +%Y.%m.%d`.sql.gz'
+ssh user@server 'pg_dump --clean your_db_on_production | gzip > backup_`date +%Y.%m.%d`.sql.gz'
 
 # Secure copy it to local file dump.sql.gz (this file will be auto deleted when the worker completes) on heroku
-scp basil@85.159.211.37:backup_`date +%Y.%m.%d`.sql.gz dump.sql.gz
+scp user@server:backup_`date +%Y.%m.%d`.sql.gz dump.sql.gz
 
 # Add easypeasy role to avoid schema errors - seems we cannot, we don't have permission
 # It seems the role is not needed, not sure why this role is needed on production db

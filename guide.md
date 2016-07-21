@@ -115,7 +115,7 @@ This solution is only suitable for small operations. A few ways it can be improv
 
 5. It should be possible to create a direct database ssh tunnel and copy the data that way and thus avoid needing to do backup/restores. That would need to be investigated. Some info is [here](http://stackoverflow.com/questions/21575582/ssh-tunneling-from-heroku) - that question actually inspired this solution, so it's a useful reference to read (including the comments).
 
-Note that doing these steps will improve the security and robustness of the solution, separates concerns to where they belong and would simply the worker script.
+Note that doing these steps will improve the security and robustness of the solution, separates concerns to where they belong and would simplify the worker script.
 
 # Problems & solutions
 

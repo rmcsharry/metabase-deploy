@@ -13,16 +13,16 @@ This guide assumes knowledge of how Heroku works. You need Heroku toolbelt insta
 ## A note on versions
 At the time of writing (July 2016) Heroku support for Metabase is in Beta, at version 0.18.1. If you view the ReadMe you can see that it basically consists of a button to deploy Metabase directly to Heroku. Clicking the button just takes you to a setup page provided by Metabase.
 
-Note that this button is hardcoded to version 0.18.1 so clicking that button and following the steps will simply redeploy a virgin copy of 0.18.1 into our epmeta Heroku instance.
+Note that this button is hardcoded to version 0.18.1 so clicking that button and following the steps will simply redeploy a virgin copy of 0.18.1 into your Heroku instance.
 
 If you do that, make sure you understand that you must backup the Metabase Heroku Postgres database first!
-Our epmeta instance has 2 Postgres databases:
+Our Metabase instance has 2 Postgres databases:
 
 1. The default one, which is used by Metabase to store Metabase users, queries, dashboards etc.
 
-2. The 'data source' database, which holds all the application data for EasyPeasy - this is a daily copy of production. You can identify it easily because it ends with a colour used by Heroku db system (eg. Jade, Gold etc.)
+2. The 'data source' database, which holds all the application data - ie. a copy of production. You can identify it easily because it ends with a colour used by Heroku db system (eg. Jade, Gold etc.)
 
-Also be aware that if you re-deploy from Github or from the button described above in the Readme, you will end up with the virgin metabase Procfile and so the background worker that is setup to copy the production EasyPeasy database (2) will no longer execute.
+Also be aware that if you re-deploy from Github or from the button described above in the Readme, you will end up with the virgin Metabase Procfile and so the background worker that is setup to copy the production database (2) will no longer execute.
 
 The 0.18.1 guide for running Metabase on Heroku is [here](http://www.metabase.com/docs/v0.18.1/operations-guide/running-metabase-on-heroku.html).
 
@@ -35,13 +35,13 @@ Currently there are only 3 differences between this repo and the official Metaba
 
 2. A simple script to add Public/Private keys so the worker can create a secure ssh tunnel to production.
 
-3. A 3 line script to copy EasyPeasy production database (called by the worker).
+3. A 3 line script (called by the worker) to copy the production database.
 
 ## So why did we clone this?
 
 There are 2 reasons:
 
-1. So we can add a background worker that runs every day to copy EasyPeasy production database to our Metabase installation on Heroku - as this data is what is used as the source for the Metabase reports.
+1. So we can add a background worker that runs every day to copy production database to our Metabase installation on Heroku - as this data is what is used as the source for the Metabase reports.
 
 1. So we can more easily do upgrades when new versions of Metabase are released. To understand how to deploy upgraded versions of Metabase see [this quick guide](http://www.metabase.com/docs/v0.18.1/operations-guide/running-metabase-on-heroku#deploying-new-versions-of-metabase).
 
@@ -55,11 +55,11 @@ The Procfile has been changed to add a worker and [the worker](https://scheduler
 ## Security considerations
 Our worker must connect to production to grab a copy of the production database to copy over to Heroku. Currently there is no backup job running on Production, so the worker will first create a backup, zip it, then secure copy it to Heroku.
 
-For this to work, the worker uses ssh to reach production. The public key is on production in the user 'Basil' ~/.ssh/authorizedkeys file. The private key is kept on Heroku.
+For this to work, the worker uses ssh to reach production. The public key is on production in the profile of the user we use to connect ( ~/.ssh/authorizedkeys file). The private key is kept on Heroku. This is not ideal, but works (see improvements section below).
 
-Note that there is a very small security risk (see next paragraph) because the only way to make this work is for the RSA private/public key pair to not use a passphrase. This is because the worker runs as a process so it cannot respond to passphrase requests for the key. But this is still far more secure than using a login password for the 'Basil' account on production! Read more about RSA keys [here](https://help.ubuntu.com/community/SSH/OpenSSH/Keys).
+Note that there is a very small security risk (see next paragraph) because the only way to make this work is for the RSA private/public key pair to not use a passphrase. This is because the worker runs as a process so it cannot respond to passphrase requests for the key. But this is still far more secure than using a login password for the production account. Read more about RSA keys [here](https://help.ubuntu.com/community/SSH/OpenSSH/Keys).
 
-The small security risk is that if some unknown person got access to Heroku epmeta app, they can see the private key since it is stored as an environment variable in the settings tab. They could then use the key to connect to Basil's account on production. But if someone gains access to Heroku, I would say there are bigger problems than this but the first step is to simply remove the public key from Basil's account production.
+The small security risk is that if some unknown person got access to Heroku epmeta app, they can see the private key since it is stored as an environment variable in the settings tab. They could then use the key to connect to the account on production. But if someone gains access to Heroku, I would say there are bigger problems than this but the first step is to simply remove the public key from the account on production.
 
 If you are new to RSA you should understand [this](https://answers.atlassian.com/questions/331668/how-to-rectify-ssh-error-authenticity-of-host-cant-be-established) security warning about known hosts.
 
@@ -83,7 +83,7 @@ If the keys are successfully installed you can check in one of 2 ways:
 
 Note that (1) does not guarantee they are setup correctly so best to also do (2).
 
-    heroku run bash --app epmetab
+    heroku run bash --app <heroku app name here>
 
 This will cause the setup.ssh script to execute and you should see it successfully report that it wrote the public and private keys to file and the IP address of production (since it got added to known hosts)
 
@@ -100,9 +100,9 @@ HEROKU_PRIVATE_KEY successfully written to file
 If this reports the keys cannot be written, then they were not correctly added to the Heroku settings. See the Problems section at the end.
 
 ## How can I test that the steps in the worker script will work?
-See (2) just above - since you are now in a bash shell on a one-off dyno of epmeta, at this point you can  manually test the worker by copying and pasting each line of the worker script.
+See (2) just above - since you are now in a bash shell on a one-off dyno of the Heroku app, at this point you can manually test the worker by copying and pasting each line of the worker script.
 
-Note that although the dyno is destroyed when you exit the steps are real - they will really create a backup of easypeasy on production, copy it across and recreate the copy on Heroku.
+Note that although the dyno is destroyed when you exit the steps are real - they will really create a backup file on production, copy it across and recreate the copy on Heroku.
 
 ## How can this be improved?
 This solution is only suitable for small operations. A few ways it can be improved are:
@@ -124,7 +124,7 @@ Note that doing these steps will improve the security and robustness of the solu
 ## What to do if metabase does not start up?
 Sometimes metabase can crash or fail to start. The first place to look is in the logs by running this command from local heroku toolbelt:
 
-    heroku logs --app epmeta
+    heroku logs --app <heroku app name here>
 
 Usually it is due to locks not being cleared. There is more info [here](https://github.com/metabase/metabase/issues/2115).
 
@@ -134,14 +134,14 @@ If the problem is due to the database lock issue, you will see this error in the
 ERROR metabase.core :: Metabase Initialization FAILED:
 liquibase.exception.LockException: Could not acquire change log lock.
 Currently locked by
-79e938c1-be88-44fe-9ad4-4b8c0ad66d8b.prvt.dyno.rt.heroku.com (172.16.71.230) since [timestamp here]
+79e938c1-be88-44fe-9ad4-4b8c0ad66d8b.prvt.dyno.rt.heroku.com (ip address) since [timestamp here]
 ```
 
 To fix it you need to delete the lock by doing [this simple step](http://www.metabase.com/docs/v0.18.1/operations-guide/start#metabase-fails-to-startup) or if you prefer to know more about the inner workings, you can follow these 3 steps:
 
 1. From heroku toolbelt, access the database:
 
-    heroku pg:psql --app epmeta DATABASE
+    heroku pg:psql --app <heroku app name here> DATABASE
 
 2. Check that the lock matches the one in the log:
 
@@ -156,16 +156,16 @@ Usually even if the lock does not match you can delete it and simply restart the
 ## What to do if keys are not setup correctly?
 You can either manually add the keys in the settings section, or put each key into a local file and run heroku toolbelt commands to add them (this is the preferred way). For example create 2 files in any local folder:
 
-1. epprod.pub.key <- public key
+1. heroku.pub.key <- public key
 
-2. epprod.key <- private key
+2. heroku.key <- private key
 
 Then run the following commands:
 
 ```bash
-heroku config:set HEROKU_PRIVATE_KEY="`cat epprod.key`" --app epmeta
+heroku config:set HEROKU_PRIVATE_KEY="`cat heroku.key`" --app <heroku app name here>
 
-heroku config:set HEROKU_PUBLIC_KEY="`cat epprod.key.pub`" --app epmeta
+heroku config:set HEROKU_PUBLIC_KEY="`cat heroku.key.pub`" --app <heroku app name here>
 ```
 
 Each command should not report any error and you should see the key in the terminal response. NOW DELETE THE KEYFILES, they should not be left lying around on your local machine.
@@ -178,7 +178,7 @@ WARNING: this is destructive, it will completely replace the existing Metabase c
 From inside your local folder (eg cd metabase-deploy):
 
 ```bash
-git remote add heroku https://git.heroku.com/epmeta.git
+git remote add heroku https://git.heroku.com/<heroku app name here>.git
 git push -f heroku master
 ```
 
@@ -206,5 +206,5 @@ Put the backup in a public http location (eg. dropbox, amazon ecs). See guide [h
 Then from your local machine:
 
 ```bash
-heroku pg:backups restore <YOUR PUBLIC URL> DATABASE_URL --app epmata
+heroku pg:backups restore <YOUR PUBLIC URL> DATABASE_URL --app <heroku app name here>
 ```

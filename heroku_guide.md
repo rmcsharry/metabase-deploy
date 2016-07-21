@@ -100,7 +100,11 @@ HEROKU_PRIVATE_KEY successfully written to file
 If this reports the keys cannot be written, then they were not correctly added to the Heroku settings. See the Problems section at the end.
 
 ## How can I test that the steps in the worker script will work?
-See (2) just above - since you are now in a bash shell on a one-off dyno of the Heroku app, at this point you can manually test the worker by copying and pasting each line of the worker script.
+See (2) just above - since you are now in a bash shell on a one-off dyno of epmeta, at this point you can  manually test each worker step by copying and pasting each line of the worker script. 
+
+You can also (from your local machine) use theHeroku toolbelt to execute the entire worker:
+
+    heroku run ./bin/copyprod --app <heroku app name here>
 
 Note that although the dyno is destroyed when you exit the steps are real - they will really create a backup file on production, copy it across and recreate the copy on Heroku.
 

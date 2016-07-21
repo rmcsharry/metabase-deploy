@@ -8,6 +8,8 @@ This repo is a clone from https://github.com/metabase/metabase-deploy.
 
 This is for internal use to copy production postgres database to Heroku so users can write Metabase reports against the data. But anyone could follow these instructions and do the same in their environment.
 
+This guide assumes knowledge of how Heroku works. You need Heroku toolbelt installed to run most of the commands shown.
+
 ## A note on versions
 At the time of writing (July 2016) Heroku support for Metabase is in Beta, at version 0.18.1. If you view the ReadMe you can see that it basically consists of a button to deploy Metabase directly to Heroku. Clicking the button just takes you to a setup page provided by Metabase.
 

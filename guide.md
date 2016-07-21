@@ -1,9 +1,14 @@
-# Metabase
+# Metabase on Heroku
 
 If you are new to Heroku, read [this](http://evans.io/legacy/posts/heroku-survival-guide/) 10 minute survival guide first. Then follow [this](http://www.tilcode.com/category/heroku/) setup guide.
 
 This repo is a clone from https://github.com/metabase/metabase-deploy.
 
+## Who is this for?
+
+This is for internal use to copy production postgres database to Heroku so users can write Metabase reports against the data. But anyone could follow these instructions and do the same in their environment.
+
+## A note on versions
 At the time of writing (July 2016) Heroku support for Metabase is in Beta, at version 0.18.1. If you view the ReadMe you can see that it basically consists of a button to deploy Metabase directly to Heroku. Clicking the button just takes you to a setup page provided by Metabase.
 
 Note that this button is hardcoded to version 0.18.1 so clicking that button and following the steps will simply redeploy a virgin copy of 0.18.1 into our epmeta Heroku instance.
@@ -19,7 +24,7 @@ Also be aware that if you re-deploy from Github or from the button described abo
 
 The 0.18.1 guide for running Metabase on Heroku is [here](http://www.metabase.com/docs/v0.18.1/operations-guide/running-metabase-on-heroku.html).
 
-Since Metabase is aready setup, you don't need to read the setup guide, but it is [here](http://www.metabase.com/docs/v0.18.1/setting-up-metabase.html).
+The setup guide for Metabase is [here](http://www.metabase.com/docs/v0.18.1/setting-up-metabase.html).
 
 ## So what is the difference between this repo and the official Metabase repo?
 Currently there are only 3 differences between this repo and the official Metabase repo on github:
@@ -85,8 +90,8 @@ Running bash on ⬢ epmetab... up, run.8636
 Checking if keys exist...
 HEROKU_PUBLIC_KEY successfully written to file
 HEROKU_PRIVATE_KEY successfully written to file
-# 85.159.211.37 SSH-2.0-OpenSSH_6.6p1 Ubuntu-2ubuntu1
-# 85.159.211.37 SSH-2.0-OpenSSH_6.6p1 Ubuntu-2ubuntu1
+# <IP ADDRESS HERE> SSH-2.0-OpenSSH_6.6p1 Ubuntu-2ubuntu1
+# <IP ADDRESS HERE> SSH-2.0-OpenSSH_6.6p1 Ubuntu-2ubuntu1
 ~ $ 
 ```
 

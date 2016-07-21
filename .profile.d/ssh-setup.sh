@@ -8,7 +8,7 @@
 mkdir -p ${HOME}/.ssh
 chmod 700 ${HOME}/.ssh
 
-echo "Checking if private key exist..."
+echo "Checking if keys exist..."
 if [ "$HEROKU_PUBLIC_KEY" ]; then
     # Copy public key env variable into a file
     echo "${HEROKU_PUBLIC_KEY}" > ${HOME}/.ssh/id_rsa.pub
@@ -18,13 +18,13 @@ else
   echo "HEROKU_PUBLIC_KEY not found in Heroku settings"
 fi
 
-if [ "$HEROKU_PRVATE_KEY" ]; then
+if [ "$HEROKU_PRIVATE_KEY" ]; then
     # Copy private key env variable into a file
     echo "${HEROKU_PRIVATE_KEY}" > ${HOME}/.ssh/id_rsa
     chmod 600 ${HOME}/.ssh/id_rsa
-    echo "HEROKU_PRVATE_KEY successfully written to file"
+    echo "HEROKU_PRIVATE_KEY successfully written to file"
 else
-  echo "HEROKU_PRVATE_KEY not found in Heroku settings"
+  echo "HEROKU_PRIVATE_KEY not found in Heroku settings"
 fi
 
 # Auto add the host to known_hosts

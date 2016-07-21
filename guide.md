@@ -4,9 +4,9 @@ If you are new to Heroku, read [this](http://evans.io/legacy/posts/heroku-surviv
 
 This repo is a clone from https://github.com/metabase/metabase-deploy.
 
-At the time of writing (July 2016) Heroku support for Metabase is in Beta, at version 0.18.1. If you view the [Readme file](https://bitbucket.org/easypeasy/metabase-deploy/src/eff4b3b95d9d743f04c457bb637b2c2cfac40474/README.md?fileviewer=file-view-default) you can see that it basically consists of a button to deploy Metabase directly to Heroku. Clicking the button just takes you to a setup page provided by Metabase.
+At the time of writing (July 2016) Heroku support for Metabase is in Beta, at version 0.18.1. If you view the ReadMe you can see that it basically consists of a button to deploy Metabase directly to Heroku. Clicking the button just takes you to a setup page provided by Metabase.
 
-Note that this button (view the [raw](https://bitbucket.org/easypeasy/metabase-deploy/raw/eff4b3b95d9d743f04c457bb637b2c2cfac40474/README.md) Readme) is hardcoded to version 0.18.1 so clicking that button and following the steps will simply redeploy a virgin copy of 0.18.1 into our epmeta Heroku instance.
+Note that this button is hardcoded to version 0.18.1 so clicking that button and following the steps will simply redeploy a virgin copy of 0.18.1 into our epmeta Heroku instance.
 
 If you do that, make sure you understand that you must backup the Metabase Heroku Postgres database first!
 Our epmeta instance has 2 Postgres databases:

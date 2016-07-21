@@ -63,7 +63,7 @@ The small security risk is that if some unknown person got access to Heroku epme
 
 If you are new to RSA you should understand [this](https://answers.atlassian.com/questions/331668/how-to-rectify-ssh-error-authenticity-of-host-cant-be-established) security warning about known hosts.
 
-## How we created RSA key pair without a password
+## How we created RSA key pair without a password (warning: security risk)
 Like this:
 
     ssh-keygen -t rsa -N "" -f my.key
